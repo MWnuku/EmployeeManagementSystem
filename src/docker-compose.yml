@@ -1,0 +1,22 @@
+services:
+  db:
+    container_name: emp
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgresAdmin
+      PGDATA: /data/ems
+    volumes:
+      - db:/data/ems
+    ports:
+      - "5432:5432"
+    networks:
+      - db
+    restart: unless-stopped
+
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  db:
