@@ -27,7 +27,7 @@ public class EmployeeController{
 		}
 	}
 
-	@GetMapping
+	@GetMapping("/getAll")
 	public List<Employee> getAllEmployees(){
 		return employeeRepository.getAllEmployees();
 	}
@@ -55,7 +55,16 @@ public class EmployeeController{
 		if(!employeeRepository.getEmployeesBySeniority(seniority).isEmpty())
 			return employeeRepository.getEmployeesBySeniority(seniority);
 		else{
-			throw new ResponseStatusException(HttpStatus.NO_CONTENT, "There is no employees with that seniority");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no employees with that seniority");
+		}
+	}
+
+	@DeleteMapping("{id}")
+	public void deleteEmployeeById(@PathVariable("id") Long id){
+		if(employeeRepository.existsById(id))
+			employeeRepository.deleteEmployeeById(id);
+		else{
+			throw new ResponseStatusException((HttpStatus.NOT_FOUND), "There is no employee with that id");
 		}
 	}
 }

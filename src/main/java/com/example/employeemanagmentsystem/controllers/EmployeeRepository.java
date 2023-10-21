@@ -22,7 +22,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 
 	Optional<Employee> getEmployeeById(Long id);
 
-	//	void addEmployee(Employee employee);
-
-//	void deleteEmployee(Employee employee);
+	void deleteEmployeeById(Long id);
 }
