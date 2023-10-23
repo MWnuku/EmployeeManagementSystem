@@ -1,12 +1,9 @@
 package com.example.employeemanagmentsystem.controllers;
 
-import com.example.employeemanagmentsystem.Repositories.TeamRepository;
 import com.example.employeemanagmentsystem.Services.TeamService;
 import com.example.employeemanagmentsystem.models.Employee;
 import com.example.employeemanagmentsystem.models.Team;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;

@@ -4,11 +4,13 @@ import com.example.employeemanagmentsystem.Repositories.EmployeeRepository;
 import com.example.employeemanagmentsystem.models.Employee;
 import com.example.employeemanagmentsystem.models.Seniority;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class EmployeeService{
 	private final EmployeeRepository employeeRepository;
 
