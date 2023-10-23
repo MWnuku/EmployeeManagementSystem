@@ -1,5 +1,7 @@
 package com.example.employeemanagmentsystem.controllers;
 
+import com.example.employeemanagmentsystem.Repositories.EmployeeRepository;
+import com.example.employeemanagmentsystem.Services.EmployeeService;
 import com.example.employeemanagmentsystem.models.Employee;
 import com.example.employeemanagmentsystem.models.Seniority;
 import org.springframework.http.HttpStatus;
@@ -12,59 +14,39 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController{
-	private final EmployeeRepository employeeRepository;
+	private final EmployeeService employeeService;
 
-	public EmployeeController(EmployeeRepository employeeRepository){
-		this.employeeRepository = employeeRepository;
+	public EmployeeController(EmployeeService employeeService){
+		this.employeeService = employeeService;
 	}
 
 	@PostMapping("/add")
 	public Employee addEmployee(@RequestBody Employee employee){
-		if(employeeRepository.existsByNameAndLastNameAndAddress(employee.getName(), employee.getLastName(), employee.getAddress()))
-			return employeeRepository.save(employee);
-		else{
-			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "There is already employee");
-		}
+		return employeeService.addEmployee(employee);
 	}
 
 	@GetMapping("/getAll")
 	public List<Employee> getAllEmployees(){
-		return employeeRepository.getAllEmployees();
+		return employeeService.getAllEmployees();
 	}
 
 	@GetMapping("{id}")
 	public Optional<Employee> getEmployeeById(@PathVariable("id") Long id){
-		if(employeeRepository.existsById(id))
-			return employeeRepository.getEmployeeById(id);
-		else{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no employee with this id");
-		}
+		return employeeService.getEmployeeById(id);
 	}
 
 	@GetMapping("/{name}/{lastname}")
 	public Optional<Employee> getEmployeeByNameAndLastName(@PathVariable("name") String name, @PathVariable("lastname") String lastname){
-		if(employeeRepository.existsByNameAndLastName(name, lastname))
-			return employeeRepository.getEmployeeByNameAndLastName(name, lastname);
-		else{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no employee with this name and lastname");
-		}
+		return employeeService.getEmployeeByNameAndLastName(name, lastname);
 	}
 
 	@GetMapping("{seniority}")
 	public List<Employee> getEmployeesBySeniority(@PathVariable("seniority") Seniority seniority){
-		if(!employeeRepository.getEmployeesBySeniority(seniority).isEmpty())
-			return employeeRepository.getEmployeesBySeniority(seniority);
-		else{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no employees with that seniority");
-		}
+		return employeeService.getEmployeesBySeniority(seniority);
 	}
 
 	@DeleteMapping("{id}")
 	public void deleteEmployeeById(@PathVariable("id") Long id){
-		if(employeeRepository.existsById(id))
-			employeeRepository.deleteEmployeeById(id);
-		else{
-			throw new ResponseStatusException((HttpStatus.NOT_FOUND), "There is no employee with that id");
-		}
+		employeeService.deleteEmployeeById(id);
 	}
 }

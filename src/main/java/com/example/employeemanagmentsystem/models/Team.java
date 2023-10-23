@@ -11,13 +11,14 @@ import java.util.Objects;
 public class Team{
 
 	@Id
+	@SequenceGenerator(name = "team_id_sequence", sequenceName = "team_id_sequence", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_id_sequence")
 	@Column(name = "team_id")
 	private Long id;
 	@OneToMany(mappedBy = "team")
 	private List<Employee> employees = new ArrayList<>();
 
-	public Team(Long id, List<Employee> employees){
-		this.id = id;
+	public Team(List<Employee> employees){
 		this.employees = employees;
 	}
 

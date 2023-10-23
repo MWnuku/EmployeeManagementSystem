@@ -1,49 +1,47 @@
 package com.example.employeemanagmentsystem.controllers;
 
+import com.example.employeemanagmentsystem.Repositories.TeamRepository;
+import com.example.employeemanagmentsystem.Services.TeamService;
 import com.example.employeemanagmentsystem.models.Employee;
 import com.example.employeemanagmentsystem.models.Team;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/team")
 public class TeamController{
-	private final TeamRepository teamRepository;
+	private final TeamService teamService;
 
-	public TeamController(TeamRepository teamRepository){
-		this.teamRepository = teamRepository;
+	public TeamController(TeamService teamService){
+		this.teamService = teamService;
 	}
 
 	@PostMapping("/add")
 	public Team addTeam(){
-		return new Team();
+		return teamService.addTeam();
+	}
+
+	@PostMapping("/add/{employees}")
+	public Team addTeam(@PathVariable("employees") List<Employee> employees){
+		return teamService.addTeam(employees);
 	}
 
 	@GetMapping("/getAll")
 	public List<Team> getAllTeams(){
-		return teamRepository.getAllTeams();
+		return teamService.getAllTeams();
 	}
 
 	@GetMapping("/{id}")
 	public Optional<Team> getTeamById(@PathVariable("id") Long id){
-		if(teamRepository.existsTeamById(id))
-			return teamRepository.getTeamById(id);
-		else{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no team with this id.");
-		}
+		return teamService.getTeamById(id);
 	}
 
 	@GetMapping("/{id}/employees")
 	public List<Employee> getTeamsEmployeesById(@PathVariable("id") Long id){
-		if(teamRepository.existsTeamById(id))
-			return teamRepository.getTeamById(id).get().getEmployees();
-		else{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no team with this id.");
-		}
+		return teamService.getTeamsEmployeesById(id);
 	}
 }

@@ -1,4 +1,4 @@
-package com.example.employeemanagmentsystem.controllers;
+package com.example.employeemanagmentsystem.Repositories;
 
 import com.example.employeemanagmentsystem.models.Address;
 import com.example.employeemanagmentsystem.models.Employee;
