@@ -30,17 +30,17 @@ public class TeamService{
 		return teamRepository.findAll();
 	}
 
-	public Optional<Team> getTeamById(Long id){
+	public Optional<Team> findTeamById(Long id){
 		if(teamRepository.existsTeamById(id))
-			return teamRepository.getTeamById(id);
+			return teamRepository.findTeamById(id);
 		else{
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no team with this id.");
 		}
 	}
 
-	public List<Employee> getTeamsEmployeesById(Long id){
+	public List<Employee> findTeamsEmployeesById(Long id){
 		if(teamRepository.existsTeamById(id))
-			return teamRepository.getTeamById(id).get().getEmployees();
+			return teamRepository.findTeamById(id).get().getEmployees();
 		else{
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no team with this id.");
 		}

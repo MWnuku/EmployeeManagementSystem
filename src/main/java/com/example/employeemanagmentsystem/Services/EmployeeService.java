@@ -30,28 +30,26 @@ public class EmployeeService{
 		return employeeRepository.findAll();
 	}
 
-	public Optional<Employee> getEmployeeById(Long id){
+	public Optional<Employee> findEmployeeById(Long id){
 		if(employeeRepository.existsById(id))
-			return employeeRepository.getEmployeeById(id);
+			return employeeRepository.findEmployeeById(id);
 		else{
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no employee with this id");
 		}
 	}
 
-	public Optional<Employee> getEmployeeByNameAndLastName(String name, String lastname){
+	public Optional<Employee> findEmployeeByNameAndLastName(String name, String lastname){
 		if(employeeRepository.existsByNameAndLastName(name, lastname))
-			return employeeRepository.getEmployeeByNameAndLastName(name, lastname);
+			return employeeRepository.findEmployeeByNameAndLastName(name, lastname);
 		else{
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no employee with this name and lastname");
 		}
 	}
 
-	public List<Employee> getEmployeesBySeniority(Seniority seniority){
-		if(employeeRepository.getEmployeesBySeniority(seniority).isEmpty())
+	public List<Employee> findEmployeesBySeniority(Seniority seniority){
+		if(employeeRepository.findEmployeesBySeniority(seniority).isEmpty())
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no employees with that seniority");
-		else{
-			return employeeRepository.getEmployeesBySeniority(seniority);
-		}
+		return employeeRepository.findEmployeesBySeniority(seniority);
 	}
 
 	public void deleteEmployeeById(Long id){

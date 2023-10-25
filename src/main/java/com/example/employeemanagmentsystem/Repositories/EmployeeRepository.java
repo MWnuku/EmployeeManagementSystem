@@ -15,12 +15,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 
 	Boolean existsByNameAndLastName(String name, String lastname);
 
-	Optional<Employee> getEmployeeByNameAndLastName(String name, String lastname);
+	Optional<Employee> findEmployeeByNameAndLastName(String name, String lastname);
 	Boolean existsByNameAndLastNameAndAddress(String name, String lastname, Address address);
 
-	List<Employee> getEmployeesBySeniority(Seniority seniority);
+	List<Employee> findEmployeesBySeniority(Seniority seniority);
 
-	Optional<Employee> getEmployeeById(Long id);
+	Optional<Employee> findEmployeeById(Long id);
 
 	void deleteEmployeeById(Long id);
 }

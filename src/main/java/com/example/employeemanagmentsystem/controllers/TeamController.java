@@ -33,12 +33,12 @@ public class TeamController{
 	}
 
 	@GetMapping("/{id}")
-	public Optional<Team> getTeamById(@PathVariable("id") Long id){
-		return teamService.getTeamById(id);
+	public Optional<Team> findTeamById(@PathVariable("id") Long id){
+		return teamService.findTeamById(id);
 	}
 
 	@GetMapping("/{id}/employees")
-	public List<Employee> getTeamsEmployeesById(@PathVariable("id") Long id){
-		return teamService.getTeamsEmployeesById(id);
+	public List<Employee> findTeamsEmployeesById(@PathVariable("id") Long id){
+		return teamService.findTeamsEmployeesById(id);
 	}
 }

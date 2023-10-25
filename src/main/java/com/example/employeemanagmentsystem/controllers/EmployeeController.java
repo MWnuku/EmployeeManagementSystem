@@ -28,18 +28,18 @@ public class EmployeeController{
 	}
 
 	@GetMapping("{id}")
-	public Optional<Employee> getEmployeeById(@PathVariable("id") Long id){
-		return employeeService.getEmployeeById(id);
+	public Optional<Employee> findEmployeeById(@PathVariable("id") Long id){
+		return employeeService.findEmployeeById(id);
 	}
 
 	@GetMapping("/{name}/{lastname}")
-	public Optional<Employee> getEmployeeByNameAndLastName(@PathVariable("name") String name, @PathVariable("lastname") String lastname){
-		return employeeService.getEmployeeByNameAndLastName(name, lastname);
+	public Optional<Employee> findEmployeeByNameAndLastName(@PathVariable("name") String name, @PathVariable("lastname") String lastname){
+		return employeeService.findEmployeeByNameAndLastName(name, lastname);
 	}
 
 	@GetMapping("{seniority}")
-	public List<Employee> getEmployeesBySeniority(@PathVariable("seniority") Seniority seniority){
-		return employeeService.getEmployeesBySeniority(seniority);
+	public List<Employee> findEmployeesBySeniority(@PathVariable("seniority") Seniority seniority){
+		return employeeService.findEmployeesBySeniority(seniority);
 	}
 
 	@DeleteMapping("{id}")
