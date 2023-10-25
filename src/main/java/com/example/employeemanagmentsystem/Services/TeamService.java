@@ -26,8 +26,8 @@ public class TeamService{
 		return teamRepository.save(new Team(employees));
 	}
 
-	public List<Team> getAllTeams(){
-		return teamRepository.getAllTeams();
+	public List<Team> findAll(){
+		return teamRepository.findAll();
 	}
 
 	public Optional<Team> getTeamById(Long id){

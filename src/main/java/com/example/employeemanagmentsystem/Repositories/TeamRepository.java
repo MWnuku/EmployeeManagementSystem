@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long>{
-	List<Team> getAllTeams();
+	List<Team> findAll();
 	Boolean existsTeamById(Long id);
 	Optional<Team> getTeamById(Long id);
 }

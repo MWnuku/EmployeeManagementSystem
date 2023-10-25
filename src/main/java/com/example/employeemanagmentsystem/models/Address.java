@@ -13,7 +13,6 @@ public class Address{
 //	@Column(name = "address_id")
 	@PrimaryKeyJoinColumn
 	private Long id;
-
 	private String country;
 	private String city;
 	private String street;

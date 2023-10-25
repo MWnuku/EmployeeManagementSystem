@@ -13,19 +13,14 @@ public class Employee{
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_id_sequence")
 	@Column(name = "employee_id")
 	private Long id;
-	@Column
 	private String name;
-	@Column
 	private String lastName;
 //	@Column
 	@OneToOne
 	@PrimaryKeyJoinColumn(name = "address_id")
 	private Address address;
-	@Column
 	private String email;
-	@Column
 	private Integer age;
-	@Column
 	private Seniority seniority;
 //	@Column
 	@ManyToOne

@@ -28,8 +28,8 @@ public class TeamController{
 	}
 
 	@GetMapping("/getAll")
-	public List<Team> getAllTeams(){
-		return teamService.getAllTeams();
+	public List<Team> findAll(){
+		return teamService.findAll();
 	}
 
 	@GetMapping("/{id}")
