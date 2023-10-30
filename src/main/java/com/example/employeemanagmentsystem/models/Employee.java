@@ -22,7 +22,7 @@ public class Employee{
 	private String name;
 	private String lastName;
 	@JoinColumn(name = "address_id")
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Address address;
 	private String email;
 	private Integer age;

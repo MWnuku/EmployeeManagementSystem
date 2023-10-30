@@ -15,6 +15,7 @@ public class Address{
 	@Id
 	@SequenceGenerator(name = "address_id_sequence", sequenceName = "address_id_sequence", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_id_sequence")
+	@Column(name = "address_id", unique = true, nullable = false)
 	@Setter(AccessLevel.NONE)
 	private Long id;
 	private String country;
@@ -59,6 +60,6 @@ public class Address{
 
 	@Override
 	public String toString(){
-		return "Address{" + "id=" + id + ", country='" + country + '\'' + ", city='" + city + '\'' + ", street='" + street + '\'' + ", number=" + number + ", optionalNumber='" + additionalInfo + '\'' + ", zipcode='" + zipcode + '\'' + '}';
+		return "Address{" + "id=" + id + ", country='" + country + '\'' + ", city='" + city + '\'' + ", street='" + street + '\'' + ", number=" + number + ", additionalInfo='" + additionalInfo + '\'' + ", zipcode='" + zipcode + '\'' + '}';
 	}
 }

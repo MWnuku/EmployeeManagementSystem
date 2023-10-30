@@ -1,6 +1,8 @@
 package com.example.employeemanagmentsystem.Services;
 
+import com.example.employeemanagmentsystem.Repositories.AddressRepository;
 import com.example.employeemanagmentsystem.Repositories.EmployeeRepository;
+import com.example.employeemanagmentsystem.models.Address;
 import com.example.employeemanagmentsystem.models.Employee;
 import com.example.employeemanagmentsystem.models.Seniority;
 import org.springframework.http.HttpStatus;
@@ -13,16 +15,21 @@ import java.util.Optional;
 @Service
 public class EmployeeService{
 	private final EmployeeRepository employeeRepository;
+	private final AddressService addressService;
 
-	public EmployeeService(EmployeeRepository employeeRepository){
+	public EmployeeService(EmployeeRepository employeeRepository, AddressRepository addressRepository, AddressService addressService){
 		this.employeeRepository = employeeRepository;
+		this.addressService = addressService;
 	}
 
 	public Employee addEmployee(Employee employee){
-		if(employeeRepository.existsByNameAndLastNameAndAddress(employee.getName(), employee.getLastName(), employee.getAddress()))
+		if(!employeeRepository.existsByNameAndLastNameAndAddress(employee.getName(), employee.getLastName(), employee.getAddress())){
+			if(!addressService.exists(employee.getAddress()))
+				addressService.addAddress(employee.getAddress());
 			return employeeRepository.save(employee);
+		}
 		else{
-			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "There is already employee");
+			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "There is already that employee");
 		}
 	}
 
