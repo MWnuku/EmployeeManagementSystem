@@ -27,5 +27,8 @@ public class AddressService{
 		return addressRepository.save(address);
 	}
 
+	public void deleteAddress(Address address){
+		addressRepository.delete(address);
+	}
 
 }
