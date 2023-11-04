@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "team")
+@Table(name = "teams")
 @Getter
 @Setter
 public class Team{
@@ -21,7 +21,7 @@ public class Team{
 	@Column(name = "team_id")
 	@Setter(AccessLevel.NONE)
 	private Long id;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "team", cascade = CascadeType.PERSIST)
 	private List<Employee> employees = new ArrayList<>();
 
 	public Team(List<Employee> employees){

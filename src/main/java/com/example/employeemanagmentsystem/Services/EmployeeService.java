@@ -15,23 +15,28 @@ import java.util.Optional;
 @Service
 public class EmployeeService{
 	private final EmployeeRepository employeeRepository;
-	private final AddressService addressService;
 
-	public EmployeeService(EmployeeRepository employeeRepository, AddressRepository addressRepository, AddressService addressService){
+	private final AddressRepository addressRepository;
+
+	public EmployeeService(EmployeeRepository employeeRepository, AddressRepository addressRepository){
 		this.employeeRepository = employeeRepository;
-		this.addressService = addressService;
+		this.addressRepository = addressRepository;
 	}
 
-	public Employee addEmployee(Employee employee){
-		if(!employeeRepository.existsByNameAndLastNameAndAddress(employee.getName(), employee.getLastName(), employee.getAddress())){
-			if(!addressService.exists(employee.getAddress()))
-				employee.setAddress(addressService.addAddress(employee.getAddress()));
-			return employeeRepository.save(employee);
-		}
+	public Employee addEmployee(Employee employee) {
+		Address address = employee.getAddress();
+		Address existingAddress = addressRepository.findByCityAndStreetAndNumberAndAdditionalInfo(
+				address.getCity(), address.getStreet(), address.getNumber(), address.getAdditionalInfo());
+		if(existingAddress != null)
+			employee.setAddress(existingAddress);
 		else{
-			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "There is already that employee");
+			address = addressRepository.save(address);
+			employee.setAddress(address);
 		}
+
+		return employeeRepository.save(employee);
 	}
+
 
 	public List<Employee> getAll(){
 		return employeeRepository.findAll();

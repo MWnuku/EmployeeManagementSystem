@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
+import javax.validation.constraints.Email;
 
 import java.util.Objects;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "employees")
 @Getter
 @Setter
 public class Employee{
@@ -19,16 +19,23 @@ public class Employee{
 	@Column(name = "employee_id")
 	@Setter(AccessLevel.NONE)
 	private Long id;
+	@Column(nullable = false)
 	private String name;
+	@Column(nullable = false)
 	private String lastName;
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id", referencedColumnName = "address_id")
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false)
 	private Address address;
+	@Column(name = "email", unique = true, nullable = false)
+	@Email
 	private String email;
+	@Column(nullable = false)
 	private Integer age;
+	@Enumerated(value = EnumType.STRING)
+	@Column(nullable = false)
 	private Seniority seniority;
 	@JoinColumn(name = "team_id")
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private Team team;
 	public Employee(String name, String lastName, Address address, String email, Integer age, Seniority seniority){
 		this.name = name;
