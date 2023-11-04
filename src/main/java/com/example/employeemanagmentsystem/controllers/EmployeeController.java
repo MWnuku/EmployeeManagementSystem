@@ -1,5 +1,6 @@
 package com.example.employeemanagmentsystem.controllers;
 
+import com.example.employeemanagmentsystem.Services.AddressService;
 import com.example.employeemanagmentsystem.Services.EmployeeService;
 import com.example.employeemanagmentsystem.models.Employee;
 import com.example.employeemanagmentsystem.models.Seniority;
@@ -12,13 +13,18 @@ import java.util.Optional;
 @RequestMapping("/employee")
 public class EmployeeController{
 	private final EmployeeService employeeService;
+	private final AddressService addressService;
 
-	public EmployeeController(EmployeeService employeeService){
+	public EmployeeController(EmployeeService employeeService, AddressService addressService){
 		this.employeeService = employeeService;
+		this.addressService = addressService;
 	}
 
 	@PostMapping("/add")
 	public Employee addEmployee(@RequestBody Employee employee){
+		if(!addressService.exists(employee.getAddress())) {
+			addressService.addAddress(employee.getAddress());
+		}
 		return employeeService.addEmployee(employee);
 	}
 

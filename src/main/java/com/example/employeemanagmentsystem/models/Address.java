@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,10 +16,10 @@ import java.util.Objects;
 @Setter
 public class Address{
 	@Id
-	@SequenceGenerator(name = "address_id_sequence", sequenceName = "address_id_sequence", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_id_sequence")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "address_id", unique = true, nullable = false)
 	@Setter(AccessLevel.NONE)
+	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private Long id;
 	private String country;
 	private String city;
@@ -24,6 +27,8 @@ public class Address{
 	private Integer number;
 	private String additionalInfo;
 	private String zipcode;
+	@OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Employee> emplyees = new ArrayList<>();
 	public Address(String country, String city, String street, String zipcode, Integer number){
 		this.country = country;
 		this.city = city;
@@ -50,16 +55,16 @@ public class Address{
 		if(o == null || getClass() != o.getClass())
 			return false;
 		Address address = (Address) o;
-		return Objects.equals(id, address.id) && Objects.equals(country, address.country) && Objects.equals(city, address.city) && Objects.equals(street, address.street) && Objects.equals(number, address.number) && Objects.equals(additionalInfo, address.additionalInfo) && Objects.equals(zipcode, address.zipcode);
+		return Objects.equals(id, address.id) && Objects.equals(country, address.country) && Objects.equals(city, address.city) && Objects.equals(street, address.street) && Objects.equals(number, address.number) && Objects.equals(additionalInfo, address.additionalInfo) && Objects.equals(zipcode, address.zipcode) && Objects.equals(emplyees, address.emplyees);
 	}
 
 	@Override
 	public int hashCode(){
-		return Objects.hash(id, country, city, street, number, additionalInfo, zipcode);
+		return Objects.hash(id, country, city, street, number, additionalInfo, zipcode, emplyees);
 	}
 
 	@Override
 	public String toString(){
-		return "Address{" + "id=" + id + ", country='" + country + '\'' + ", city='" + city + '\'' + ", street='" + street + '\'' + ", number=" + number + ", additionalInfo='" + additionalInfo + '\'' + ", zipcode='" + zipcode + '\'' + '}';
+		return "Address{" + "id=" + id + ", country='" + country + '\'' + ", city='" + city + '\'' + ", street='" + street + '\'' + ", number=" + number + ", additionalInfo='" + additionalInfo + '\'' + ", zipcode='" + zipcode + '\'' + ", emplyees=" + emplyees + '}';
 	}
 }

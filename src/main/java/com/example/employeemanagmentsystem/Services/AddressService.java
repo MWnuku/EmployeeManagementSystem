@@ -26,7 +26,7 @@ public class AddressService{
 	}
 
 	public Address addAddress(Address address){
-		if(exists(address) || addressRepository.existsById(address.getId()))
+		if(exists(address))
 			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This address already exists.");
 		return addressRepository.save(address);
 	}

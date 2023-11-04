@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import java.util.Objects;
 
@@ -14,15 +15,14 @@ import java.util.Objects;
 public class Employee{
 
 	@Id
-	@SequenceGenerator(name = "employee_id_sequence", sequenceName = "employee_id_sequence", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_id_sequence")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "employee_id")
 	@Setter(AccessLevel.NONE)
 	private Long id;
 	private String name;
 	private String lastName;
-	@JoinColumn(name = "address_id")
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "address_id", referencedColumnName = "address_id")
 	private Address address;
 	private String email;
 	private Integer age;
@@ -30,7 +30,6 @@ public class Employee{
 	@JoinColumn(name = "team_id")
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Team team;
-
 	public Employee(String name, String lastName, Address address, String email, Integer age, Seniority seniority){
 		this.name = name;
 		this.lastName = lastName;

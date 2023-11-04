@@ -25,7 +25,7 @@ public class EmployeeService{
 	public Employee addEmployee(Employee employee){
 		if(!employeeRepository.existsByNameAndLastNameAndAddress(employee.getName(), employee.getLastName(), employee.getAddress())){
 			if(!addressService.exists(employee.getAddress()))
-				addressService.addAddress(employee.getAddress());
+				employee.setAddress(addressService.addAddress(employee.getAddress()));
 			return employeeRepository.save(employee);
 		}
 		else{

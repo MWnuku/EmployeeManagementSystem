@@ -17,8 +17,7 @@ import java.util.Objects;
 public class Team{
 
 	@Id
-	@SequenceGenerator(name = "team_id_sequence", sequenceName = "team_id_sequence", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_id_sequence")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "team_id")
 	@Setter(AccessLevel.NONE)
 	private Long id;
