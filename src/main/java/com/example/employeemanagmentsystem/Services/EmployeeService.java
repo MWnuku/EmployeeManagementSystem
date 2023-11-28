@@ -2,9 +2,11 @@ package com.example.employeemanagmentsystem.Services;
 
 import com.example.employeemanagmentsystem.Repositories.AddressRepository;
 import com.example.employeemanagmentsystem.Repositories.EmployeeRepository;
+import com.example.employeemanagmentsystem.Repositories.TeamRepository;
 import com.example.employeemanagmentsystem.models.Address;
 import com.example.employeemanagmentsystem.models.Employee;
 import com.example.employeemanagmentsystem.models.Seniority;
+import com.example.employeemanagmentsystem.models.Team;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,10 +19,12 @@ public class EmployeeService{
 	private final EmployeeRepository employeeRepository;
 
 	private final AddressRepository addressRepository;
+	private final TeamRepository teamRepository;
 
-	public EmployeeService(EmployeeRepository employeeRepository, AddressRepository addressRepository){
+	public EmployeeService(EmployeeRepository employeeRepository, AddressRepository addressRepository, TeamRepository teamRepository){
 		this.employeeRepository = employeeRepository;
 		this.addressRepository = addressRepository;
+		this.teamRepository = teamRepository;
 	}
 
 	public Employee addEmployee(Employee employee) {
@@ -32,6 +36,16 @@ public class EmployeeService{
 		else{
 			address = addressRepository.save(address);
 			employee.setAddress(address);
+		}
+		if(employee.getTeam() != null){
+			Team team = employee.getTeam();
+			Team existingTeam = teamRepository.findTeamById(team.getId());
+			if(existingTeam != null){
+				employee.setTeam(existingTeam);
+			} else{
+				team = teamRepository.save(team);
+				employee.setTeam(team);
+			}
 		}
 
 		return employeeRepository.save(employee);

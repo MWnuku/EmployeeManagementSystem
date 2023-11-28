@@ -1,9 +1,14 @@
 package com.example.employeemanagmentsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
+
 import javax.validation.constraints.Email;
 
 import java.util.Objects;
@@ -12,6 +17,7 @@ import java.util.Objects;
 @Table(name = "employees")
 @Getter
 @Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Employee{
 
 	@Id
@@ -35,7 +41,7 @@ public class Employee{
 	@Column(nullable = false)
 	private Seniority seniority;
 	@JoinColumn(name = "team_id")
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne(optional = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private Team team;
 	public Employee(String name, String lastName, Address address, String email, Integer age, Seniority seniority){
 		this.name = name;

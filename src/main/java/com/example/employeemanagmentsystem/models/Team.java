@@ -1,5 +1,9 @@
 package com.example.employeemanagmentsystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -14,6 +18,7 @@ import java.util.Objects;
 @Table(name = "teams")
 @Getter
 @Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Team{
 
 	@Id
@@ -21,7 +26,7 @@ public class Team{
 	@Column(name = "team_id")
 	@Setter(AccessLevel.NONE)
 	private Long id;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "team", cascade = CascadeType.PERSIST)
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private List<Employee> employees = new ArrayList<>();
 
 	public Team(List<Employee> employees){

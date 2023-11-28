@@ -36,7 +36,7 @@ public class TeamController{
 	}
 
 	@GetMapping("/{id}")
-	public Optional<Team> findTeamById(@PathVariable("id") Long id){
+	public Team findTeamById(@PathVariable("id") Long id){
 		return teamService.findTeamById(id);
 	}
 

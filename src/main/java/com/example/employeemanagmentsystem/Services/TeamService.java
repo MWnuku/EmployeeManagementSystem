@@ -34,7 +34,7 @@ public class TeamService{
 		return teamRepository.findAll();
 	}
 
-	public Optional<Team> findTeamById(Long id){
+	public Team findTeamById(Long id){
 		if(teamRepository.existsTeamById(id))
 			return teamRepository.findTeamById(id);
 		else{
@@ -44,20 +44,21 @@ public class TeamService{
 
 	public List<Employee> findTeamsEmployeesById(Long id){
 		if(teamRepository.existsTeamById(id))
-			return teamRepository.findTeamById(id).get().getEmployees();
+			return teamRepository.findTeamById(id).getEmployees();
 		else{
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no team with this id.");
 		}
 	}
 
-	//TODO
+
 	@Transactional
 	public void addEmployeeByIdToTeamById(Long teamId, Long employeeId) {
 		Team team = teamRepository.findById(teamId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no team with this id."));
 		Employee employee = employeeRepository.findById(employeeId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no employee with this id."));
-
+		employee.setTeam(team);
+		employeeRepository.save(employee);
 		team.getEmployees().add(employee);
 		teamRepository.save(team);
 	}
