@@ -2,6 +2,7 @@ package com.example.employeemanagmentsystem.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -42,6 +43,7 @@ public class Employee{
 	private Seniority seniority;
 	@JoinColumn(name = "team_id")
 	@ManyToOne(optional = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JsonIdentityReference(alwaysAsId = true)
 	private Team team;
 	public Employee(String name, String lastName, Address address, String email, Integer age, Seniority seniority){
 		this.name = name;
