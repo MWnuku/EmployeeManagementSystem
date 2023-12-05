@@ -15,11 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RequestMapping("/emp")
 public class EmployeeManagementSystemApplication{
-	@Autowired
-	private EmployeeService employeeService;
-
 	public static void main(String[] args) {
 		SpringApplication.run(EmployeeManagementSystemApplication.class, args);
 	}
-
 }

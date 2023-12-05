@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,5 +85,15 @@ public class EmployeeService{
 		else{
 			throw new ResponseStatusException((HttpStatus.NOT_FOUND), "There is no employee with that id");
 		}
+	}
+
+	public List<Employee> findEmployeesWithoutTeam(){
+		List<Employee> employees = getAll();
+		List<Employee> unemployed = new ArrayList<>();
+		for(Employee employee : employees){
+			if(employee.getTeam() == null)
+				unemployed.add(employee);
+		}
+		return unemployed;
 	}
 }

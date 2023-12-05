@@ -54,6 +54,16 @@ public class Employee{
 		this.seniority = seniority;
 	}
 
+	public Employee(String name, String lastName, Address address, String email, Integer age, Seniority seniority, Team team){
+		this.name = name;
+		this.lastName = lastName;
+		this.address = address;
+		this.email = email;
+		this.age = age;
+		this.seniority = seniority;
+		this.team = team;
+	}
+
 	public Employee(){}
 
 	@Override
