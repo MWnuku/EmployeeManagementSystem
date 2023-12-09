@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,7 +54,7 @@ public class TeamService{
 	}
 
 	@Transactional
-	public void addEmployeeByIdToTeamById(Long teamId, Long employeeId){
+	public void addEmployeeByIdToTeamById(Long employeeId, Long teamId){
 		Team team = teamRepository.findById(teamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no team with this id."));
 		Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no employee with this id."));
 		employee.setTeam(team);
@@ -64,12 +63,41 @@ public class TeamService{
 		teamRepository.save(team);
 	}
 
-	//TODO
 	@Transactional
 	public void assignEmployeesWithoutTeams(){
 		List<Employee> unemployed = employeeService.findEmployeesWithoutTeam();
 		List<Team> teams = findAll();
-		Map<Seniority, List<Employee>> employeesBySeniority = unemployed.stream()
+		if(teams.isEmpty())
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There are no teams.");
+
+		Map<Seniority, List<Employee>> employeesBySeniority = sortEmployeesBySeniority(unemployed);
+
+		for(Seniority seniority : Seniority.values()){
+			List<Employee> seniorityList = employeesBySeniority.get(seniority);
+			if(seniorityList != null)
+				for(Employee employee : seniorityList){
+					Team team = findTeamWithLowestNumberOfEmployeesBySeniority(seniority);
+					addEmployeeByIdToTeamById(employee.getId(), team.getId());
+				}
+		}
+	}
+
+	@Transactional
+	public Map<Seniority, List<Employee>> sortEmployeesBySeniority(List<Employee> employees){
+
+		return employees.stream()
 				.collect(Collectors.groupingBy(Employee::getSeniority));
+	}
+
+	public Team findTeamWithLowestNumberOfEmployeesBySeniority(Seniority seniority){
+		List<Team> teams = findAll();
+
+		Optional<Team> teamWithFewestEmployees = teams.stream()
+				.min(Comparator.comparingInt(team ->
+						(int) team.getEmployees().stream()
+								.filter(employee -> employee.getSeniority() == seniority)
+								.count()));
+
+		return teamWithFewestEmployees.get();
 	}
 }
