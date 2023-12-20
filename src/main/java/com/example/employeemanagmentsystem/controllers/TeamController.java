@@ -67,4 +67,28 @@ public class TeamController{
 			return new ResponseEntity<>("An error occurred while assigning employees without teams to teams", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	@PostMapping("/delete/{id}")
+	public ResponseEntity<String> deleteTeamById(@PathVariable("id") Long teamId){
+		try{
+			teamService.deleteTeamById(teamId);
+			return new ResponseEntity<>("Team successfully deleted", HttpStatus.OK);
+		} catch(ResponseStatusException e){
+			return new ResponseEntity<>(e.getReason(), e.getStatusCode());
+		} catch(Exception e){
+			return new ResponseEntity<>("An error occurred while deleting the team.", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PostMapping("/delete/{id}/{employeeId}")
+	public ResponseEntity<String> deleteEmployeeByIdFromTeamById(@PathVariable("id") Long teamId, @PathVariable("employeeId") Long employeeId){
+		try{
+			teamService.deleteEmployeeByIdFromTeamByid(teamId, employeeId);
+			return new ResponseEntity<>("Employee successfully deleted", HttpStatus.OK);
+		} catch(ResponseStatusException e){
+			return new ResponseEntity<>(e.getReason(), e.getStatusCode());
+		} catch(Exception e){
+			return new ResponseEntity<>("An error occurred while deleting the employee from team.", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

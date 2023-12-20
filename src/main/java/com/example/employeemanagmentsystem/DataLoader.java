@@ -52,7 +52,5 @@ public class DataLoader implements CommandLineRunner{
 		teamService.addEmployeeByIdToTeamById(1L,1L);
 		teamService.addEmployeeByIdToTeamById(2L,2L);
 		teamService.addEmployeeByIdToTeamById(3L,3L);
-
-		teamService.assignEmployeesWithoutTeams();
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.constraints.Null;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -57,8 +58,10 @@ public class TeamService{
 	public void addEmployeeByIdToTeamById(Long employeeId, Long teamId){
 		Team team = teamRepository.findById(teamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no team with this id."));
 		Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no employee with this id."));
+
 		employee.setTeam(team);
 		employeeRepository.save(employee);
+
 		team.getEmployees().add(employee);
 		teamRepository.save(team);
 	}
@@ -82,7 +85,6 @@ public class TeamService{
 		}
 	}
 
-	@Transactional
 	public Map<Seniority, List<Employee>> sortEmployeesBySeniority(List<Employee> employees){
 
 		return employees.stream()
@@ -99,5 +101,32 @@ public class TeamService{
 								.count()));
 
 		return teamWithFewestEmployees.get();
+	}
+
+	public void deleteTeamById(Long teamId){
+		if(teamRepository.existsById(teamId))
+			teamRepository.deleteById(teamId);
+		else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no team with this id.");
+		}
+	}
+
+	@Transactional
+	public void deleteEmployeeByIdFromTeamByid(Long teamId, Long employeeId){
+		if(!teamRepository.existsById(teamId))
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no team with this id.");
+
+		if(!employeeRepository.existsById(employeeId))
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no employee with this id.");
+
+		Team team = teamRepository.findTeamById(teamId);
+		Employee employee = employeeService.findEmployeeById(employeeId).get();
+
+		employee.setTeam(null);
+		List<Employee> employees = team.getEmployees();
+		employees.remove(employee);
+
+		employeeRepository.save(employee);
+		teamRepository.save(team);
 	}
 }
