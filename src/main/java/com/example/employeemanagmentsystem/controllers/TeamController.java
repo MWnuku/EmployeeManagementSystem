@@ -68,7 +68,7 @@ public class TeamController{
 		}
 	}
 
-	@PostMapping("/delete/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> deleteTeamById(@PathVariable("id") Long teamId){
 		try{
 			teamService.deleteTeamById(teamId);
@@ -80,7 +80,7 @@ public class TeamController{
 		}
 	}
 
-	@PostMapping("/delete/{id}/{employeeId}")
+	@DeleteMapping("/delete/{id}/{employeeId}")
 	public ResponseEntity<String> deleteEmployeeByIdFromTeamById(@PathVariable("id") Long teamId, @PathVariable("employeeId") Long employeeId){
 		try{
 			teamService.deleteEmployeeByIdFromTeamByid(teamId, employeeId);

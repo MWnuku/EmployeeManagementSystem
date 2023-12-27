@@ -36,4 +36,11 @@ public class AddressService{
 			throw new ResponseStatusException(HttpStatus.NO_CONTENT, "There are no addresses.");
 		return addressRepository.findAll();
 	}
+
+	public void deleteAddressById(Long id){
+		if(addressRepository.existsById(id)){
+			addressRepository.deleteById(id);
+		}
+		else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no address with this id.");
+	}
 }
